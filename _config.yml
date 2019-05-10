@@ -107,7 +107,7 @@ theme: indigo
 deploy:
   type: git
   repo: https://github.com/OEDx/OEDx.github.io.git
-  branch: gh-pages
+  branch: master
 
 feed:
   type: atom
