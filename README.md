@@ -23,7 +23,7 @@ git clone https://github.com/你的Github账户/OEDx.git
 hexo new post my-title
 ```
 
-5. 写文章，同时可以在本地（http://localhost:4000）开启预览：
+5. 写文章，同时可以在本地（http://localhost:4000） 开启预览：
 
 ``` sh
 hexo server
