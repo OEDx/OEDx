@@ -110,17 +110,17 @@ uyan_uid: false
 # 是否使用 gitment，https://github.com/imsun/gitment
 gitment:
 # gitment:
-   owner: oedx
-   repo: https://github.com/OEDx/OEDx.github.io
-   client_id: ab64984be8acc2ff38d0
-   client_secret: 2c4556a59504adc6921c333d2fed51e4d4b61d63
+   #owner: oedx
+   #repo: https://github.com/OEDx/OEDx.github.io
+   #client_id: ab64984be8acc2ff38d0
+   #client_secret: 2c4556a59504adc6921c333d2fed51e4d4b61d63
 
 # use gitalk://github.com/gitalk/gitalk
-gitalk: false
-  #owner: oedx
-  #repo: https://github.com/OEDx/OEDx.github.io
-  #client_id: ab64984be8acc2ff38d0
-  #client_secret: 2c4556a59504adc6921c333d2fed51e4d4b61d63
+gitalk:
+  owner: oedx
+  repo: OEDx.github.io
+  client_id: ab64984be8acc2ff38d0
+  client_secret: 2c4556a59504adc6921c333d2fed51e4d4b61d63
 
 # Valine Comment system. https://valine.js.org
 valine:
