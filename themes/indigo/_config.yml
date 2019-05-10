@@ -117,6 +117,7 @@ uyan_uid: false
 # use gitalk://github.com/gitalk/gitalk
 gitalk:
   owner: oedx
+  admin: wzpan
   repo: OEDx.github.io
   client_id: ab64984be8acc2ff38d0
   client_secret: 2c4556a59504adc6921c333d2fed51e4d4b61d63
