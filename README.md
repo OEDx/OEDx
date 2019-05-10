@@ -14,7 +14,7 @@ npm install -g hexo-cli
 3. 克隆你的仓库
 
 ``` sh
-git clone https://github.com/你的Github账户/OEDx.github.io.git
+git clone https://github.com/你的Github账户/OEDx.git
 ```
 
 4. 写文章，同时可以在本地（http://localhost:4000）开启预览：
