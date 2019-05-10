@@ -12,11 +12,13 @@ menu:
     text: 主页
     url: /
   archives:
+    text: 归档
     url: /archives
   tags:
+    text: 标签
     url: /tags
   th-list:
-    text: Categories
+    text: 分类
     url: /categories
   github:
     url: https://github.com/OEDx
@@ -44,9 +46,9 @@ email:
 color: '#3F51B5'
 
 # 页面标题
-tags_title: Tags
-archives_title: Archives
-categories_title: Categories
+tags_title: 标签
+archives_title: 归档
+categories_title: 分类
 
 # 文章截断
 excerpt_render: false
@@ -88,7 +90,7 @@ baidu_tongji: false
 tajs: false
 
 # google
-google_analytics: false
+google_analytics: 'UA-41569408-2'
 google_site_verification: false
 
 # sogou站长验证 http://zhanzhang.sogou.com/
@@ -115,7 +117,7 @@ gitment: false
 
 # use gitalk://github.com/gitalk/gitalk
 gitalk:
-  owner: oedx
+  owner: wzpan
   repo: https://github.com/OEDx/OEDx.github.io
   client_id: 8dec09e8b1fedf40675d
   client_secret: 8a1d9125c4d23a3d3637e985d98edc3defe5f7b6
@@ -144,7 +146,7 @@ hyper_id: false
 canonical: false
 
 # 版权起始年份
-since_year: 2015
+since_year: 2019
 
 # 用户页面中作者相关的描述性文字，如不需要设为 false
 about: false

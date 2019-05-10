@@ -17,7 +17,13 @@ npm install -g hexo-cli
 git clone https://github.com/你的Github账户/OEDx.git
 ```
 
-4. 写文章，同时可以在本地（http://localhost:4000）开启预览：
+4. 新建文章：
+
+``` sh
+hexo new post my-title
+```
+
+5. 写文章，同时可以在本地（http://localhost:4000）开启预览：
 
 ``` sh
 hexo server
@@ -25,3 +31,37 @@ hexo server
 
 5. 提交你的改动
 6. 发 Pull Request 等待管理员审核
+
+## 书写技巧
+
+### Create a new post
+
+``` bash
+$ hexo new "My New Post"
+```
+
+More info: [Writing](https://hexo.io/docs/writing.html)
+
+### Run server
+
+``` bash
+$ hexo server
+```
+
+More info: [Server](https://hexo.io/docs/server.html)
+
+### Generate static files
+
+``` bash
+$ hexo generate
+```
+
+More info: [Generating](https://hexo.io/docs/generating.html)
+
+### Deploy to remote sites
+
+``` bash
+$ hexo deploy
+```
+
+More info: [Deployment](https://hexo.io/docs/deployment.html)

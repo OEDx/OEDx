@@ -4,11 +4,11 @@
 
 # Site
 title: OEDx
-subtitle: 在线教育部
+subtitle: 在线教育部技术博客
 description: 在线教育部技术博客
 keywords: [在线教育, 客户端, 后台, 前端]
 author: oedx
-language:
+language: zh-CN
 timezone:
 
 # URL
@@ -72,31 +72,6 @@ pagination_dir: page
 
 # Extensions
 ## Plugins: https://hexo.io/plugins/
-# Markdown-it config
-## Docs: https://github.com/celsomiranda/hexo-renderer-markdown-it/wiki
-markdown:
-  render:
-    html: true
-    xhtmlOut: false
-    breaks: false
-    linkify: true
-    typographer: true
-    quotes: '“”‘’'
-  plugins:
-    - markdown-it-footnote
-    - markdown-it-mathjax
-    - markdown-it-emoji
-  anchors:
-    # Minimum level for ID creation. (Ex. h2 to h6)
-    level: 2
-    # A suffix that is prepended to the number given if the ID is repeated.
-    collisionSuffix: 'v'           
-    # If `true`, creates an anchor tag with a permalink besides the heading.
-    permalink: false             
-    # Class used for the permalink anchor tag.
-    permalinkClass: header-anchor 
-    # The symbol used to make the permalink
-    permalinkSymbol:     
 
 
 ## Themes: https://hexo.io/themes/
