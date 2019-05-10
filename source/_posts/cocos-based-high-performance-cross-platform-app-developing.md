@@ -3,6 +3,7 @@ title: 基于 Cocos 的高性能跨平台开发方案
 date: 2019-05-10 17:01:35
 tags: Cocos
 categories: 客户端
+author: "[潘伟洲(josephpan)](http://hahack.com)"
 ---
 
 大概从去年九月份开始，我们选择使用Cocos来作为我们一款产品 ABCmouse 的跨平台应用开发方案，在这个过程中，我们做了一系列的优化，也踩了一些坑，本文将对这个过程做一个回顾和总结。
