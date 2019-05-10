@@ -1,5 +1,7 @@
 # OEDx 博客
 
+<a href="https://travis-ci.org/oedx/oedx"><img alt="Travis" src="https://img.shields.io/travis/oedx/oedx.svg?style=flat-square"></a>
+
 ## 贡献方法
 
 1. 安装 hexo ：
