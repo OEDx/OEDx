@@ -81,7 +81,7 @@ theme: indigo
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://github.com/OEDx/OEDx.github.io.git
+  repo: https://gh_token@github.com/OEDx/OEDx.github.io.git
   branch: master
 
 feed:
