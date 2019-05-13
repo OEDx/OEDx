@@ -107,3 +107,12 @@ jsonContent:
     excerpt: false
     categories: false
     tags: true
+
+Plugins:
+- hexo-generator-baidu-sitemap
+- hexo-generator-sitemap
+
+baidusitemap:
+    path: baidusitemap.xml
+sitemap:
+    path: sitemap.xml
