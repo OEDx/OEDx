@@ -1,6 +1,6 @@
 ---
 title: 基于 Cocos 的高性能跨平台开发方案
-date: 2019-05-10 17:01:35
+date: 2018-07-07 17:01:35
 tags: Cocos
 categories: 客户端
 author: "[潘伟洲(josephpan)](http://hahack.com)"
@@ -14,21 +14,21 @@ author: "[潘伟洲(josephpan)](http://hahack.com)"
 
 首先介绍一下我们的产品，ABCmouse 是美国知名的儿童英语在线学习领导品牌，在美国有超过百万家庭在使用，也获得了7万多个教师的推荐。
 
-![ABCmouse](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/abcmouse-legacy.png)
+![ABCmouse](/images/cocos-based-high-performance-cross-platform-app-developing/abcmouse-legacy.png)
 
 这个应用采用的是典型的 Hybrid App 跨平台开发方案，里头基本全是 H5 的页面。
 
-![ABCmouse是一款 Hybrid App](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/hybrid-app.png)
+![ABCmouse是一款 Hybrid App](/images/cocos-based-high-performance-cross-platform-app-developing/hybrid-app.png)
 
 Hybrid App 最大的问题就是性能问题，用户经常会在页面加载上等待非常多时间。
 
 我们统计了 ABCmouse 各个场景的平均加载耗时，发现平均都要花费大约三到四秒的时间。漫长的等待时间也对用户的学习积极性带来影响。
 
-![ABCmouse启动耗时统计](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/performance-legacy.png)
+![ABCmouse启动耗时统计](/images/cocos-based-high-performance-cross-platform-app-developing/performance-legacy.png)
 
 从去年九月份开始，团队与 ABCmouse 的研发公司 Age of Learning 公司开展了战略合作，我们希望能够开发出一款针对中国儿童的英语学习应用——我们称之为 ABCmouse 腾讯版。我们希望它能提供更符合中国儿童使用习惯的学习路径，并在里头融入腾讯的社交元素，从而带动儿童外语学习的积极性。
 
-![ABCmouse腾讯版](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/abcmouse-tencent.png)
+![ABCmouse腾讯版](/images/cocos-based-high-performance-cross-platform-app-developing/abcmouse-tencent.png)
 
 从技术上，我们希望新版的 ABCmouse 能够在表现力、性能、效率和社交四大方面都能有更好的表现（这里的表现力指的是产品的界面和交互，能够做到更吸引中国的小朋友）。
 
@@ -47,7 +47,7 @@ Hybrid App 最大的问题就是性能问题，用户经常会在页面加载上
 
 一图胜千言。我们整个系统架构可以用这张图来概括。
 
-![新版ABCmouse的应用架构](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/infrastructure.png)
+![新版ABCmouse的应用架构](/images/cocos-based-high-performance-cross-platform-app-developing/infrastructure.png)
 
 我们自底向上看，最底层是 native 层，Cocos2d-x 开发框架,在这一层提供了对 JavaScriptCore、SpiderMonkey、V8、ChakraCore 等多种可选的 JS 执行引擎的封装。在这基础上又架设了一层 JSB ，主要起到桥接作用。我们的应用也在底层封装了多种基础能力，包括支持直出的webview、自定义的视频播放器、音频播放器、支付、推送等。
 
@@ -61,11 +61,11 @@ Cocos 层和 Native 层就通过 callStaticMethod 和 evalString 来完成互相
 
 Cocos 的渲染原理是在 UI 线程将场景文件理解成场景树，然后交给 GL 线程渲染。也就是说，用户看到的大部分场景都是使用 OpenGL 或者 WebGL 绘制的，即使在不同的平台，也能够有完全相同的表现。
 
-{% img http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/cocos-rendering.png Cocos的跨平台绘制原理 %}
+{% img /images/cocos-based-high-performance-cross-platform-app-developing/cocos-rendering.png Cocos的跨平台绘制原理 %}
 
 而 React Native 的渲染原理是将 JS/JSX 理解成 Virtual DOM，然后调用各自平台的 Widget 。由于不同的平台，底层的 Widget 表现是不同的，因此使用上可能会存在差异。这也是 React Native 为人诟病的一点。
 
-{% img http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/rn-rendering.png React Native 的跨平台调用原理 %}
+{% img /images/cocos-based-high-performance-cross-platform-app-developing/rn-rendering.png React Native 的跨平台调用原理 %}
 
 ### 甜头篇
 
@@ -75,21 +75,21 @@ Cocos 的渲染原理是在 UI 线程将场景文件理解成场景树，然后�
 
 由于Cocos支持构建小游戏版本的应用，所以我们的项目也提供了小游戏版本。上周末已经有很多爸爸在微信小游戏里收到了他们的孩子使用 ABCmouse 制作的贺卡。值得一提的是，小游戏版本是我们两个开发在花了一周左右的时间内移植完成的。这里头主要的移植工作在于接入微信小游戏的登录授权，接入 VideoPlayer 和 InnerAudioContext 以分别支持视频播放和音频播放。
 
-![微信小游戏上的父亲节贺卡](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/abcmouse-wxgame.png)
+![微信小游戏上的父亲节贺卡](/images/cocos-based-high-performance-cross-platform-app-developing/abcmouse-wxgame.png)
 
 第二个甜头是开发效率的提升。
 
 首先，Cocos 提供了可视化的 Cocos Creator ，使用它来管理和构建工程非常轻松。
 
-![Cocos Creator](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/cocos-creator.png)
+![Cocos Creator](/images/cocos-based-high-performance-cross-platform-app-developing/cocos-creator.png)
 
 其次，设计萌妹子也能直接使用 Cocos Creator 编辑动效，输出动效资源给开发，提高协作效率。
 
-![设计妹子也使用 Cocos Creator 制作动画](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/cooperation.png)
+![设计妹子也使用 Cocos Creator 制作动画](/images/cocos-based-high-performance-cross-platform-app-developing/cooperation.png)
 
 另外，Cocos Creator 支持直接在浏览器中预览调试场景，节省了大把构建编译的耗时。
 
-![直接使用浏览器调试场景](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/browser-debug.png)
+![直接使用浏览器调试场景](/images/cocos-based-high-performance-cross-platform-app-developing/browser-debug.png)
 
 第三个甜头是热更新带来的便利。
 
@@ -97,15 +97,15 @@ Cocos 同时支持脚本和资源的热更新，这给我们修复线上问题�
 
 此外，Cocos 的热更新可以做到 hot reload，无需冷重启，很好的保证了用户的体验。并且，Cocos 的热更新支持高度可定制，可以很方便的定制满足业务需要的热更新流程。
 
-![ABCmouse 里的热更新](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/hot-upgrade.png)
+![ABCmouse 里的热更新](/images/cocos-based-high-performance-cross-platform-app-developing/hot-upgrade.png)
 
 第四个甜头是 Cocos 提供的强大的社区支持。Cocos 的开发团队来自中国，有着非常活跃的中文社区。
 
-![Cocos 的中文论坛](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/cocos-forum.png)
+![Cocos 的中文论坛](/images/cocos-based-high-performance-cross-platform-app-developing/cocos-forum.png)
 
 另外，使用 Cocos 开发小游戏也成了最主要的方式，可见 Cocos 的受欢迎程度，也侧面证明了这套开发框架的生命力。
 
-![使用 Cocos 开发小游戏的占比](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/cocos-on-wxgame.png)
+![使用 Cocos 开发小游戏的占比](/images/cocos-based-high-performance-cross-platform-app-developing/cocos-on-wxgame.png)
 
 ## 踩坑篇
 
@@ -114,15 +114,15 @@ Cocos 同时支持脚本和资源的热更新，这给我们修复线上问题�
 首先，Cocos 主要是面向游戏开发的，要使用它来开发应用，少不了需要开发一些 UI 组件。因此，我们在 Cocos 层开发了一系列的通用 UI 组件，包括对话框、选择器、表单、按钮、toast、loading 等组件，这些组件遵循一套规范化的接口标准，使用起来非常便捷灵活。
 
 
-![ABCmouse里的通用UI组件](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/ui-components.png)
+![ABCmouse里的通用UI组件](/images/cocos-based-high-performance-cross-platform-app-developing/ui-components.png)
 
 开发完 UI 组件后，我们发现这些组件的加载也存在问题。和原生应用开发不同，这些UI组件本质上都是挂载在场景里头的节点，如果没有调度的话，可能存在同时弹出多种弹窗和对话框的情况，整个场景就会变得很混乱。
 
-![没有调度的情况下，可能出现场景混乱](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/dialogmanager-before.png)
+![没有调度的情况下，可能出现场景混乱](/images/cocos-based-high-performance-cross-platform-app-developing/dialogmanager-before.png)
 
 为了解决这种问题，我们写了一个针对 Cocos 的弹窗调度器，统一由它来调度弹窗，避免了弹窗的混乱。
 
-![有调度的情况](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/dialogmanager-after.png)
+![有调度的情况](/images/cocos-based-high-performance-cross-platform-app-developing/dialogmanager-after.png)
 
 我们接下来遇到的另一个坑是 VideoPlayer 的置顶问题。
 
@@ -133,12 +133,12 @@ Cocos 同时支持脚本和资源的热更新，这给我们修复线上问题�
 比如我们希望视频播放器里头能加上我们自定义的按钮、进度条，如果是直接在 Cocos 层对 VideoPlayer 进行封装的话，会发现这些 UI 元素会被视频本身遮盖，达不到定制界面的目的。
 
 
-![VideoPlayer 的置顶问题](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/videoplayer-cocos.png)
+![VideoPlayer 的置顶问题](/images/cocos-based-high-performance-cross-platform-app-developing/videoplayer-cocos.png)
 
 最终我们放弃了直接使用 Cocos 提供的 VideoPlayer 组件，而是在底层为各个端开发视频播放器，并各自实现界面的定制。
 
 
-![改为各端实现 VideoPlayer](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/videoplayer-customized.png)
+![改为各端实现 VideoPlayer](/images/cocos-based-high-performance-cross-platform-app-developing/videoplayer-customized.png)
 
 视频播放问题解决了，我们又遇到了音频播放的问题。
 
@@ -150,7 +150,7 @@ Cocos 同时支持脚本和资源的热更新，这给我们修复线上问题�
 
 由于对外的接口只有一套，开发者无需考虑具体的平台和底层播放器的选择。并且可以使用同样的接口来统一管理不同的音频。
 
-![跨平台的 AudioPlayer](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/audioplayer.png)
+![跨平台的 AudioPlayer](/images/cocos-based-high-performance-cross-platform-app-developing/audioplayer.png)
 
 最后我们遇到的一个比较严重的问题是 local reference table overflow error 问题。
 
@@ -210,9 +210,9 @@ static bool JavaScriptJavaBridge_callStaticMethod(se::State& s)
 
 了解到这个原因后，我们给 Cocos 的引擎提交了一个 pull request，修复了这个问题。
 
-![](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/pull-request-description.png)
+![](/images/cocos-based-high-performance-cross-platform-app-developing/pull-request-description.png)
 
-![pull request](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/pull-request-commit.png)
+![pull request](/images/cocos-based-high-performance-cross-platform-app-developing/pull-request-commit.png)
 
 ## 优化篇
 
@@ -224,7 +224,7 @@ static bool JavaScriptJavaBridge_callStaticMethod(se::State& s)
 
 下图这个场景是 ABCmouse 里的二级资源页，由于一次性加载了太多子节点，当屏幕滚动时，帧率降到了 8 fps 左右，给人的感受是非常卡顿。
 
-![官方 ScrollView 处理大量子节点导致滑动卡顿](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/scrollview-legacy.png)
+![官方 ScrollView 处理大量子节点导致滑动卡顿](/images/cocos-based-high-performance-cross-platform-app-developing/scrollview-legacy.png)
 
 我们对 ScrollView 进行了重写，基本的优化思路是：一次仅加载页面可容纳的少量数目子节点。并在滚动过程中，回收不可视的子节点组件并重用。
 
@@ -233,10 +233,10 @@ static bool JavaScriptJavaBridge_callStaticMethod(se::State& s)
 下图是对上述思路的图例。当手势向上，内容往下滚动时，一旦最上排的子节点组件不可视，就立马将它们回收掉并将其重用于将要渲染的子节点组件中。
 
 
-![高性能 ScrollView：滚动前](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/scrollview-before-scrolling.png)
+![高性能 ScrollView：滚动前](/images/cocos-based-high-performance-cross-platform-app-developing/scrollview-before-scrolling.png)
 
 
-![高性能 ScrollView：滚动后](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/scrollview-after-scrolling.png)
+![高性能 ScrollView：滚动后](/images/cocos-based-high-performance-cross-platform-app-developing/scrollview-after-scrolling.png)
 
 
 这么做的优点在于：一次仅加载页面可容纳的少量数目子节点，并且逐帧加载，能极大提升展示和滚动性能，另外大大减少了内存占用。
@@ -244,14 +244,14 @@ static bool JavaScriptJavaBridge_callStaticMethod(se::State& s)
 经过优化后，不管二级资源页场景里有多少元素需要展示，整体的帧率都维持在 60 fps 左右，非常流畅。
 
 
-![高性能 ScrollView](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/scrollview-new.png)
+![高性能 ScrollView](/images/cocos-based-high-performance-cross-platform-app-developing/scrollview-new.png)
 
 ### 内存优化
 
 内存占用过高也是 Cocos 开发过程中很容易遇到的问题。如果没有优化好内存占用，很可能就会引发黑屏或者 OOM。
 
 
-![内存不足导致黑屏](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/black-screen.png)
+![内存不足导致黑屏](/images/cocos-based-high-performance-cross-platform-app-developing/black-screen.png)
 
 
 要优化内存占用，有几个思路。第一个思路是把内存消耗大以及没有回收的元凶先找出来对症下药。
@@ -259,32 +259,32 @@ static bool JavaScriptJavaBridge_callStaticMethod(se::State& s)
 于是，我们仿照 Cocos 的监视器也写了一个内存监视器，利用它来找出疑似存在内存泄漏的场景。
 
 
-![内存监视器](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/memory-calculator.png)
+![内存监视器](/images/cocos-based-high-performance-cross-platform-app-developing/memory-calculator.png)
 
 
 对于每一个场景，我们也对每个节点的内存占用做了一个排名，找出靠前的，分析是否合理，并进行针对性的优化。比如把原图缩小，把无需透明像素的png图转换成JPG图，等等。
 
 
-![节点内存排名](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/calculate-memory.png)
+![节点内存排名](/images/cocos-based-high-performance-cross-platform-app-developing/calculate-memory.png)
 
 
 第二个思路是为图片渲染开启纹理压缩，从而大幅度降低图片渲染的内存占用。Cocos 提供了 ETC1、PVR 等几种纹理压缩方案，其中，PVR 兼容性最好，内存消耗也最低，但是质量较差；ETC1 不支持 iOS 的低端机型，质量也较差。我们又对 Cocos2d-x 进行扩展，增加了 ETC2 纹理压缩，这种方案的优势比起 ETC1 而言，压缩质量更好。
 
 
-![三种纹理压缩方式](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/texture-compressors.png)
+![三种纹理压缩方式](/images/cocos-based-high-performance-cross-platform-app-developing/texture-compressors.png)
 
 
 下图可以看到 ETC2 和 PVR 压缩质量和内存占用的直观对比。
 对比原图，我们可以看出 ETC2 的压缩结果与原图相差不大，但内存减少了 75% 。而 PVR 的压缩结果相比 ETC2 言在细节方面少了很多，内存则减少了 87.5% 。
 
 
-![PVR / ETC2 效果对比](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/etc2-vs-pvr.png)
+![PVR / ETC2 效果对比](/images/cocos-based-high-performance-cross-platform-app-developing/etc2-vs-pvr.png)
 
 
 针对兼容性问题，我们设计了一种混合纹理压缩方案：对于高质量要求的纹理，如果该机型能支持ETC2，就使用ETC2纹理压缩；如果不支持，就将该纹理进行大小减半压缩；对于低质量要求的纹理，使用兼容性好的PVR纹理压缩。单图渲染的内存消耗可以降低接近 75%~87.5%。
 
 
-![混合纹理压缩方案（专利申请中）](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/mixture-compress.png)
+![混合纹理压缩方案（专利申请中）](/images/cocos-based-high-performance-cross-platform-app-developing/mixture-compress.png)
 
 
 纹理压缩是一项耗时的任务，所以我们把这项任务放在项目构建完后进行，而不是在客户端运行的时候才动态压缩。
@@ -292,7 +292,7 @@ static bool JavaScriptJavaBridge_callStaticMethod(se::State& s)
 我们编写了一个扩展工具，在构建完成后自动进行纹理压缩任务。后面我们发现这个工具压缩完一遍纹理要花费大概3分钟的时间，我们又改进成了增量压缩的方式，一次压缩任务缩短到10秒左右。
 
 
-![纹理压缩工具（即将开源）](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/compress-plugin.png)
+![纹理压缩工具（即将开源）](/images/cocos-based-high-performance-cross-platform-app-developing/compress-plugin.png)
 
 
 ### drawcall 优化
@@ -302,7 +302,7 @@ static bool JavaScriptJavaBridge_callStaticMethod(se::State& s)
 什么是 drawcall 呢？我们可以看这张图来了解一下。在一帧的渲染过程中，场景会先被解析成场景树。场景树的每一个节点依次加入渲染队列中等待交付 GPU 渲染。GPU 接收渲染指令并执行的操作就叫做一次 drawcall。在一帧里头，drawcall 越少，性能当然就越好。
 
 
-![理解 drawcall](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/drawcall-1.png)
+![理解 drawcall](/images/cocos-based-high-performance-cross-platform-app-developing/drawcall-1.png)
 
 
 Cocos 针对 drawcall 优化已经提供了一种自动合并技术：比如，上图中的渲染指令 1、2 来自贴图 A，3、4 来自贴图 B ,5、6、7 来自贴图 C，这些指令会被分别合并优化，最终只产生 3 次 drawcall。我们要做的就是利用好这个自动合并技术。
@@ -316,10 +316,10 @@ Cocos 针对 drawcall 优化已经提供了一种自动合并技术：比如，�
 
 
 
-![Cocos 提供的 AutoAtlas 自动图集功能](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/autoatlas.png)
+![Cocos 提供的 AutoAtlas 自动图集功能](/images/cocos-based-high-performance-cross-platform-app-developing/autoatlas.png)
 
 
-![使用 BMFont 位图字体优化 Label 的 drawcall](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/bmfont-label.png)
+![使用 BMFont 位图字体优化 Label 的 drawcall](/images/cocos-based-high-performance-cross-platform-app-developing/bmfont-label.png)
 
 目前这套优化方案还不能满足动态资源和动画的优化，我们也期待 Cocos 能够把 batching 技术做得更完善。
 
@@ -328,7 +328,7 @@ Cocos 针对 drawcall 优化已经提供了一种自动合并技术：比如，�
 例如，下图中的渲染指令 4 使用的是贴图 C，直接卡在了渲染指令 3 和 5 之间，导致贴图 B 的渲染指令没法合并，从而浪费了多余的 drawcall。通过调整节点层级可以避免这个问题。
 
 
-![避免跨层切换贴图](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/drawcall-2.png)
+![避免跨层切换贴图](/images/cocos-based-high-performance-cross-platform-app-developing/drawcall-2.png)
 
 
 ### Hybrid 页面优化
@@ -342,13 +342,13 @@ Cocos 针对 drawcall 优化已经提供了一种自动合并技术：比如，�
 - 一个是可以对页面进行少量标注，只增量更新需要动态变的部分。
 
 
-![Hybrid 页面优化技术点](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/hybrid-optimize.png)
+![Hybrid 页面优化技术点](/images/cocos-based-high-performance-cross-platform-app-developing/hybrid-optimize.png)
 
 
 通过这一系列的优化，我们的应用里头的 H5 页面的加载耗时也能够控制在 1 秒以内。
 
 
-![Hybrid 页面优化效果对比](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/hybrid-optimized-result.png)
+![Hybrid 页面优化效果对比](/images/cocos-based-high-performance-cross-platform-app-developing/hybrid-optimized-result.png)
 
 ## 整体效果对比
 
@@ -357,26 +357,26 @@ Cocos 针对 drawcall 优化已经提供了一种自动合并技术：比如，�
 项目整体的 Cocos 化率目前占到了 56%，剩下的还有 40% 的 H5 的页面（主要是一些小游戏），还有像视频这种 native 场景。
 
 
-![ABCmouse 中的场景占比，其中只有Games和Videos不是Cocos](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/cocos-rewrite-rate.png)
+![ABCmouse 中的场景占比，其中只有Games和Videos不是Cocos](/images/cocos-based-high-performance-cross-platform-app-developing/cocos-rewrite-rate.png)
 
 对比原来的场景启动耗时，经过一系列改造和优化后的场景都能控制在 1 秒内启动。
 
 
-![启动耗时对比（左：老版ABCmouse；右：新版ABCmouse）](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/performance-compare.png)
+![启动耗时对比（左：老版ABCmouse；右：新版ABCmouse）](/images/cocos-based-high-performance-cross-platform-app-developing/performance-compare.png)
 
 直接看数据不够直观，我们可以看一下原来加载耗时最长的一个场景，经过改造后做到了秒开。
 
 
-![涂色场景-改造前](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/coloring-legacy.gif)
+![涂色场景-改造前](/images/cocos-based-high-performance-cross-platform-app-developing/coloring-legacy.gif)
 
 
-![涂色场景-改造后](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/coloring-new.gif)
+![涂色场景-改造后](/images/cocos-based-high-performance-cross-platform-app-developing/coloring-new.gif)
 
 而腾讯版本的包大小也比原来的版本小了 64% 。
 
 
-![老版本和新版本的包大小对比](http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/size-compare.png)
+![老版本和新版本的包大小对比](/images/cocos-based-high-performance-cross-platform-app-developing/size-compare.png)
 
 欢迎扫码体验新版本的 ABCmouse ：
 
-{% img http://hahack.com/images/cocos-based-high-performance-cross-platform-app-developing/wxgame-code.png 400 400 扫码体验ABCmouse的小游戏版本 %}
+{% img /images/cocos-based-high-performance-cross-platform-app-developing/wxgame-code.png 400 400 扫码体验ABCmouse的小游戏版本 %}
