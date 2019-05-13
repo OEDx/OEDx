@@ -1,7 +1,7 @@
 ---
 title: 基于 Cocos 的高性能跨平台开发方案
 date: 2018-07-07 17:01:35
-tags: Cocos
+tags: [Cocos, 跨平台]
 categories: 客户端
 author: "[潘伟洲(josephpan)](http://hahack.com)"
 ---
