@@ -12,8 +12,8 @@ npm install -g hexo-cli
 
 如果 npm 过慢，可以选择使用 tnpm 。
 
-2. fork 本仓库到你的 Github 账户下
-3. 克隆你的仓库
+2. fork 本仓库到你的 Github 账户下。
+3. 克隆你的仓库。
 
 ``` sh
 git clone https://github.com/你的Github账户/OEDx.git
@@ -31,13 +31,13 @@ hexo new post my-title
 hexo server
 ```
 
-5. 提交你的改动
-6. 发 Pull Request 等待管理员审核
-7. 当审核通过后，将自动发布到博客
+5. 提交你的改动。
+6. 发 Pull Request 等待管理员审核。
+7. 当审核通过后，将自动发布到博客。
 
-## 书写技巧
+## 博客技巧
 
-### Create a new post
+### 创建一篇新文章
 
 ``` bash
 $ hexo new "My New Post"
@@ -45,26 +45,33 @@ $ hexo new "My New Post"
 
 More info: [Writing](https://hexo.io/docs/writing.html)
 
-### Run server
+### 插图
 
-``` bash
-$ hexo server
+1. 先把图放进 source/images/ 目录，为了避免与其他人的文章插图冲突，请单独为你的文章建一个与文章文件名同名的图片目录。例如：
+
+``` plain
+source/images
+    |
+    +--- cocos-based-high-performance-cross-platform-app-developing/
+	| |
+	| +-- abcmouse-legacy.png
+	| +-- abcmouse-tencent.png
+	| +-- ...
+	|
+	`--- your-post-title/
+	  |
+	  +-- your-image1.png
+	  +-- your-image2.png
 ```
 
-More info: [Server](https://hexo.io/docs/server.html)
+2. 然后在文章中用下述方式插图：
 
-### Generate static files
-
-``` bash
-$ hexo generate
+``` markdown
+![ABCmouse](/images/cocos-based-high-performance-cross-platform-app-developing/abcmouse-legacy.png)
 ```
 
-More info: [Generating](https://hexo.io/docs/generating.html)
+如果要限制高宽，可以改用 Hexo 的 `img` 插件插图。例如：
 
-### Deploy to remote sites
-
-``` bash
-$ hexo deploy
+``` markdown
+{% img /images/cocos-based-high-performance-cross-platform-app-developing/me-on-gmtc.jpg 500 500 我的GMTC首秀 %}
 ```
-
-More info: [Deployment](https://hexo.io/docs/deployment.html)
