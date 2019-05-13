@@ -22,7 +22,7 @@ git clone https://github.com/你的Github账户/OEDx.git
 4. 新建文章：
 
 ``` sh
-hexo new post my-title
+hexo new "My New Post"
 ```
 
 5. 写文章，同时可以在本地（http://localhost:4000） 开启预览：
