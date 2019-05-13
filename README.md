@@ -31,8 +31,8 @@ hexo new "My New Post"
 hexo server
 ```
 
-5. 提交你的改动。
-6. 发 Pull Request 等待管理员审核。
+5. 确认排版、插图无误后，提交你的文章。
+6. 发 Pull Request ，等待管理员审核。
 7. 当审核通过后，将自动发布到博客。
 
 ## 博客技巧
@@ -74,4 +74,58 @@ source/images
 
 ``` markdown
 {% img /images/cocos-based-high-performance-cross-platform-app-developing/me-on-gmtc.jpg 500 500 我的GMTC首秀 %}
+```
+
+### 写好 front-matters
+
+注意写好文章头部的 front-matters 。主要包含几个字段：
+
+* title：文章标题
+* date：文章编写时间
+* tags: 标签
+* categories：分类
+* author：作者信息
+
+其中，标签指的是你的文章和什么技术或主题相关，例如 `Cocos`、 `Flutter`、`React Native` 等。例如：
+
+``` yaml
+tags: Cocos
+```
+
+如果有多个标签，可以使用数组：
+
+``` markdown
+tags: [React Native, Redux]
+```
+
+分类要求指定为以下几种中的一种：
+
+* 客户端
+* 后台
+* 前端
+* 工程文化
+* 其他
+
+作者信息要求保持 `中文名(企业微信名)` 的格式。
+
+``` markdown
+author: 潘伟洲(josephpan)
+```
+
+如果有博客，允许带上链接：
+
+``` markdown
+author: "[潘伟洲(josephpan)](http://hahack.com)"
+```
+
+一个完整示例：
+
+``` markdown
+---
+title: 基于 Cocos 的高性能跨平台开发方案
+date: 2018-07-07 17:01:35
+tags: Cocos
+categories: 客户端
+author: "[潘伟洲(josephpan)](http://hahack.com)"
+---
 ```
