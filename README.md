@@ -10,7 +10,12 @@
 npm install -g hexo-cli
 ```
 
-如果 npm 过慢，可以选择使用 tnpm 。
+如果在公司里头，可以选择使用 tnpm ：
+
+``` sh
+npm install @tencent/tnpm -g --registry=http://r.tnpm.oa.com --proxy=http://r.tnpm.oa.com:80 --verbose
+tnpm install -g hexo-cli
+```
 
 2. fork 本仓库到你的 Github 账户下。
 3. 克隆你的仓库。
