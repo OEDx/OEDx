@@ -24,7 +24,14 @@ tnpm install -g hexo-cli
 git clone https://github.com/你的Github账户/OEDx.git
 ```
 
-4. 新建文章：
+4. 安装依赖：
+
+``` sh
+cd OEDx
+npm install
+```
+
+5. 新建文章：
 
 ``` sh
 hexo new "My New Post"
