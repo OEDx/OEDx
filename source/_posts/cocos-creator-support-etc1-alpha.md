@@ -1,7 +1,9 @@
 ---
-title: Cocos Creator支持ETC1+Alpha纹理压缩
+title: Cocos Creator 支持ETC1 + Alpha 纹理压缩
 date: 2019-05-15 14:40:54
-tags:
+tags: [Cocos, 纹理压缩]
+categories: 客户端
+author: "[郑桂涛(timorzheng)](http://timorzheng.com)"
 ---
 
 > ABCmouse是使用Cocos Creator（后面统称CC）开发的App，图片内存占用巨大，在Android低内存机器上容易造成OOM，纹理压缩后的图片可以直接在GPU加载渲染，减少占用内存。而本文基于CC V1.10.x版本做相应的分析及其改造，使项目支持ETC1(Ericsson Texture Compression)+Alpha纹理压缩
