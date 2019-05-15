@@ -1,5 +1,5 @@
 ---
-title: Cocos Creator 支持ETC1+Alpha纹理压缩
+title: Cocos Creator 支持ETC1 + Alpha 纹理压缩
 date: 2019-05-15 14:40:54
 tags: [Cocos, 纹理压缩]
 categories: 客户端
