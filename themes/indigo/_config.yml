@@ -19,16 +19,17 @@ menu:
     url: /tags
   th-list:
     text: 分类
-    url: /categories
+    url: /categories  
+  edit:
+    text: 投稿
+    url: https://github.com/OEDx/OEDx/blob/master/README.md
+    target: _blank
   github:
     url: https://github.com/OEDx
     target: _blank
   #weibo:
   #  url: http://www.weibo.com/ysweb
-  #  target: _blank
-  #link:
-  #  text: ABCmouse
-  #  url: https://abcmouse.qq.com
+  #  target: _blank  
 
 # 你的头像url
 avatar: /img/oedx.png
