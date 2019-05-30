@@ -6,7 +6,7 @@ tags: [Cocos, Cocos Creator, JSB, JS引擎]
 author: "晋中望(xepherjin)"
 ---
 
-## 背景
+# 背景
 一直以来，ABCmouse 项目中的整体 JS/Native 通信调用结构都是基于 `callStaticMethod <-> evalString` 的方式。通过 `callStaticMethod` 方法我们可以通过反射机制直接在 JavaScript 中调用 Java / Objective-C 的静态方法。而通过 `evalString` 方式，则可以执行 JS 代码，这样便可以进行双端通信。
 ![新版 ABCmouse 的应用架构：基于 callStaticMethod 与 evalString 进行通信](/images/cocos-creator-js-binding-manual/infrastructure.png)
 虽然基于这个方式上层封装接口后，新增业务逻辑会比较方便。但是过度依赖 `evalString` ，往往也会带来一些隐患。举个 Android 侧的例子：
@@ -44,9 +44,9 @@ jsb.fileDownloader.requestDownload(url, savePath, cookies, options, (success, ur
 ```
 那么接下来就以一个最简单的下载器的绑定流程为例，我来带大家学习下 JSB 手动绑定的大致流程。
 **（虽然 Cocos 很人性化提供了自动绑定的配置文件，可以通过一些配置直接生成目标文件，减少了很多工作量。但是亲手来完成一次手动绑定的流程会帮助更为全面地了解整个绑定的实现流程，有助于加深理解。另一方面，当存在特殊需要自动绑定无法满足时，手动绑定也往往会更为灵活）**
-## 前置
+# 前置
 在开始之前，我们需要需要知道有关 ScriptEngine 抽象层、相关 API 等相关知识，这部分内容如果已从 Cocos 文档了解可跳过直接进行 **实践**  部分。
-##### 抽象层
+## 抽象层
 ![](/images/cocos-creator-js-binding-manual/JSB2.0-Architecture.png)
 首先先来看一下上图 Cocos 官方提供的一张抽象层架构，在1.7版本中，抽象层被设计为一个与引擎没有关系的独立模块，对 JS 引擎的管理从 ScriptingCore 被移动到了 se::ScriptEngine 类中，ScriptingCore 被保留下来是希望通过它把引擎的一些事件传递给封装层，充当适配器的角色。在这个抽象层提供了对 JavaScriptCore、SpiderMonkey、V8、ChakraCore 等多种可选的 JS 执行引擎的封装。JSB 的大部分工作其实就是设定 JS 相关操作的 C++ 回调，在回调函数中关联 C++ 对象。它其实主要包含如下两种类型：
 * 注册 JS 函数（包含全局函数，类构造函数、类析构函数、类成员函数，类静态成员函数），绑定一个 C++ 回调
@@ -54,7 +54,7 @@ jsb.fileDownloader.requestDownload(url, savePath, cookies, options, (success, ur
 
 考虑到不同多种 JS 引擎的关键方法的定义各不相同，Cocos 团队使用 **宏** 来抹平这种回调函数定义与参数类型的差异，这里就不展开，详细可阅读文末Cocos Creator 的相关文档。
 **值得一提的是，ScriptEngine 这层设计之初 Cocos 团队就将其定义为一个独立模块，完全不依赖 Cocos 引擎。**我们开发者完全可以把 cocos/scripting/js-bindings/jswrapper 下的所有抽象层源码移植到其他项目中直接使用。
-##### SE 类型
+## SE 类型
 C++ 抽象层所有的类型都在 `se` 命名空间下，其为 ScriptEngine 的缩写。
 * **se::ScriptEngine**
 它是 JS 引擎的管理员，掌管 JS 引擎初始化、销毁、重启、Native 模块注册、加载脚本、强制垃圾回收、JS 异常清理、是否启用调试器。 它是一个单例，可通过 `se::ScriptEngine::getInstance()` 得到对应的实例。
@@ -67,7 +67,8 @@ C++ 抽象层所有的类型都在 `se` 命名空间下，其为 ScriptEngine �
  用于暴露 C++ 类到 JS 中，它会在 JS 中创建一个对应名称的构造函数。Class 类型创建后，不需要手动释放内存，它会被封装层自动处理。`se::Class`提供了一些 API 用于定义 Class 的创建、静态/动态成员函数、属性读写等等，后面在实践时用到会做介绍。完整内容可查阅 Cocos 文档。
 * **se::State**
 它是绑定回调中的一个环境，我们通过 `se::State` 可以取得当前的 C++ 指针、`se::Object` 对象指针、参数列表、返回值引用。
-##### 宏
+
+## 宏
 前面有提到， 抽象层使用宏来抹平不同 JS 引擎关键函数定义与参数类型的不同，不管底层是使用什么引擎，开发者统一使用一种函数的定义。
 
 例如，抽象层所有的 JS 到 C++ 的回调函数的定义为：
@@ -91,14 +92,15 @@ SE_BIND_FUNC(foo) // 此处以回调函数的定义为例
 * `_SE`：包装回调函数的名称，转义为每个 JS 引擎能够识别的回调函数的定义，注意，第一个字符为下划线，类似 Windows 下用的_T("xxx")来包装 Unicode 或者 MultiBytes 字符串
 
 在我们的简化版例子中，只需要用到 `SE_DECLARE_FUNC`、`SE_BIND_FUNC `即可。
-##### 类型转换辅助函数
+## 类型转换辅助函数
 类型转换辅助函数位于 cocos/scripting/js-bindings/manual/jsb_conversions.hpp/.cpp 中，包含了多种 `se::Value` 与 C++ 类型相互转化的方法。
 * `bool std_string_to_seval(const std::string& v, se::Value* ret);`
 * `bool seval_to_std_string(const se::Value& v, std::string* ret);`
 * `bool boolean_to_seval(bool v, se::Value* ret);`
 * `bool seval_to_boolean(const se::Value& v, bool* ret);`
 ... ...
-## 实践
+
+# 实践
 在开始之前，我们需要明确一下流程。JSB 绑定简单来讲就是在C++层实现一些类库，然后经过一些特定处理可以在 JS 端进行对应方法调用的过程。因为采用 JS 为主要业务编写语言，使得我们在做一些 Native 的功能时会比较受限，例如文件、网络等等相关操作。
 
 以 Cocos2d-js 文档中 cc.Sprite 为例，在 JSB 中 如果使用 `new` 操作符来调用 cc.Sprite 的构造函数，实际上在 C++ 层会调用 js_cocos2dx_Sprite_constructor 函数。在这个 C++ 函数中，会为这个精灵对象分配内存，并把它添加到自动回收池，然后调用 JS 层的 `_ctor` 函数来完成初始化。在 `_ctor` 函数中会根据参数类型和数量调用不同的init函数，这些init函数也是C++函数的绑定：
@@ -125,12 +127,14 @@ SE_BIND_FUNC(foo) // 此处以回调函数的定义为例
     }
 ```
 三层的方法对应关系如下：
+
 | Javascript | JSB | Cocos2d-x |
-| ---------- |-----|-----------|              
+| :--------- | :-----| :----------- |              
 | cc.Sprite.initWithSpriteFrameName | js_cocos2dx_Sprite_initWithSpriteFrameName | cocos2d::Sprite::initWithSpriteFrameName |
 | cc.Sprite.initWithSpriteFrame | js_cocos2dx_Sprite_initWithSpriteFrame | cocos2d::Sprite::initWithSpriteFrame |
 | cc.Sprite.initWithFile | js_cocos2dx_Sprite_initWithFile | cocos2d::Sprite::initWithFile |
 | cc.Sprite.initWithTexture | js_cocos2dx_Sprite_initWithTexture | cocos2d::Sprite::initWithTexture |
+
 这个调用过程的时序如下：
 ![调用时序图（引自 Cocos2d-js 文档）](/images/cocos-creator-js-binding-manual/jsb_process.png)
 
@@ -322,7 +326,7 @@ network::FileDownloader::destroyInstance();
 ================================================
 以上就是全部的绑定流程，在分别编译到 Android/iOS 环境后，我们就能够通过 `jsb.fileDownloader.download()` 进行下载调用了。
 （PS：一定切记在使用前进行 `CC_JSB` 的宏判断，因为非 JSB 环境下是无法使用的）
-## 总结
+# 总结
 我们现在来总结一下手动绑定改造的详细流程。一般而言，常用的 JSB 的改造流程大致如下：
 * 确定方法接口与 JS/Native 公共字段
 * 声明头文件，并分别实现 Android JNI 与 OC 具体业务代码
