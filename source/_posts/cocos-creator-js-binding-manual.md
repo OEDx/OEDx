@@ -7,7 +7,9 @@ author: "晋中望(xepherjin)"
 ---
 
 # 背景
+
 一直以来，ABCmouse 项目中的整体 JS/Native 通信调用结构都是基于 `callStaticMethod <-> evalString` 的方式。通过 `callStaticMethod` 方法我们可以通过反射机制直接在 JavaScript 中调用 Java / Objective-C 的静态方法。而通过 `evalString` 方式，则可以执行 JS 代码，这样便可以进行双端通信。
+
 ![新版 ABCmouse 的应用架构：基于 callStaticMethod 与 evalString 进行通信](/images/cocos-creator-js-binding-manual/infrastructure.png)
 虽然基于这个方式上层封装接口后，新增业务逻辑会比较方便。但是过度依赖 `evalString` ，往往也会带来一些隐患。举个 Android 侧的例子：
 ```
