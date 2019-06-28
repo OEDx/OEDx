@@ -164,7 +164,7 @@ packETCAplha: function (srcPath, sfile, dfile, callBack, dfile2) {
 ![](/images/cocos-texturecompression-plugin/pack4.gif)
 
 
-我们这个插件已经开源[CocosCreator 纹理压缩插件](https://github.com/lxw5689/CocosCreator-TextureCompression-Plugin)。
+我们这个插件已经开源[CocosCreator 纹理压缩插件](https://github.com/OEDx/ccc-texturecompression)。
 
 # 总结
 纹理压缩是降低图片内存占用节省GPU带宽的有效手段，对于图片占比很多的场景还是可以考虑使用纹理压缩。本文介绍了当下常见的一些纹理压缩格式，简要分析了其特点。具体选择哪种压缩格式的时候，需要结合实际情况，采用一种或者多种格式想结合的方式，获得最终想要的结果。后面简单介绍了纹理压缩工具以插件形式和Cocos Creator结合得例子，希望对有遇到类似问题的人有些帮助。
