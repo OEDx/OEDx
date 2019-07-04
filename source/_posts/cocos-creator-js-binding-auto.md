@@ -9,7 +9,8 @@ author: "张鑫(kevinxzhang)"
 > 尽管Cocos官方提供了jsb.reflection.callStaticMethod方式支持从JS端直接调用Native端（Android，iOS/Mac）的接口，但是经过大量实践发现此接口在大量频繁调用情况下性能很低下，尤其是在Android端，比如调用Native端实现的打印log的接口，而且会容易引起一些native crash，例如local reference table overflow等问题。纵观Cocos原生代码的实现，基本所有的接口方法的实现都是基于JSB的方式来实现，所以此文主要讲解下JSB的自动绑定逻辑，帮助大家能快速实现callStaticMethod到JSB的改造过程。
 
 
-# 背景
+## 背景
+
 对于用过Cocos Creater（为了方便后文直接简称CC）的人来说，**jsb.reflection.callStaticMethod** 这个方法肯定不陌生，其提供了我们从JS端调用Native端的能力，例如我们要调用Native实现的log打印和持久化的接口，就可以很方便的在JavaScrpit中按照如下的操作调用即可：
 ```javascript
 if (cc.sys.isNative && cc.sys.os == cc.sys.OS_IOS) {
@@ -28,8 +29,11 @@ jSB绑定说白了就是 C++ 和脚本层之间进行对象的转换，并转发
 JSB绑定通常有手动绑定和自动绑定两种方式，
 手动绑定方式可以参考同事写的这篇[文章](https://oedx.github.io/2019/05/29/cocos-creator-js-binding-manual/)，手动绑定方式优点是灵活，可定制型强，缺点就是全部代码要自己书写，尤其是在js类型跟c++类型转换上，稍有不慎容易导致内存泄漏，某些指针或者对象没有释放。
 自动绑定方式则会帮你省了很多麻烦，直接通过一个脚本一键生成相关的代码，后续如果有新增或者改动，也只需要重新执行一次脚本即可。所以自动绑定对于不需要进行强定制，需要快速完成JSB的情况来说就再适合不过了。下面就一步步说明下如何实现自动绑定JSB：
-# 环境配置和自动绑定展示
-### 1. 环境配置
+
+## 环境配置和自动绑定展示
+
+### 环境配置
+
 自动绑定，说简单点，其实就只要执行一个python脚本即可自动生成对应的.cpp,.h ,.js文件。所以首先要保证电脑有python运行环境，这里以Mac上安装为例来讲解
 1.安装python，强烈建议先安装[HomeBrew](https://brew.sh/),然后直接命令行运行
 ```shell
@@ -49,7 +53,9 @@ export PYTHON_BIN="/usr/bin/python"
 ```
 
 Window下直接参考上面需要安装的模块直接安装就好了，最后也要记得配置环境变量。
-### 2.自动绑定展示
+
+### 自动绑定展示
+
 这里演示的是cocos引擎下面也即⁨**build/⁨jsb-default⁩/frameworks⁩/cocos2d-x/cocos⁩/scripting⁩/js-bindings/⁨auto**⁩目录下的文件（如下图所示）是怎么自动生成的，
 ![](/images/cocos-creator-js-binding-auto/11.png)
 其实从这些文件名的开头也能看出，这些文件命名都是有某些特定规律的，那么这些文件是怎么生成的呢？
@@ -66,7 +72,8 @@ Window下直接参考上面需要安装的模块直接安装就好了，最后�
 经过上面的步骤后，build/⁨jsb-default⁩/frameworks⁩/cocos2d-x/cocos⁩/scripting⁩/js-bindings/⁨auto⁩下的文件就全部自动生成出来了，是不是非常方便。
 下面再以js层通过jsb调用Native层的log方法打印日志为例，详细的告知下如何实现通过自动绑定工具，依据自己写的c++代码，生成对应的自动绑定文件。
 
-# 编写c++层的实现
+## 编写c++层的实现
+
 C++作为连接js层和Native层的桥梁，既然要实现jsb调用，那第一步肯定是要先把C++层的头文件和实现准备好，这里我们在build⁩/jsb-defaul/frameworks⁩/cocos2d-x⁩/cocos⁩创建一个test文件夹用于存放相关文件，
 ![](/images/cocos-creator-js-binding-auto/66.png)
 这里先准备ABCJSBBridge.h，里面主要是申明了一个abcLog的函数，此函数就是供JS层调用打log的，另外由于打log方法肯定在js层很多地方都会使用，所以这里采用了一个单例模式，提供了getInstance()来获取当前类的实例
@@ -185,7 +192,9 @@ namespace abc
 }
 ```
 这里为了方便区分Android平台和iOS平台的实现，仿照Cocos源码其他地方的写法，分别提供了ABCJSBBridge-android.h和ABCJSBBridge-apple.h以及对应的实现类,两个平台分别继承IABCJSBBridgeImpl然后实现内部的虚函数即可。
-# JSB配置脚本编写
+
+## JSB配置脚本编写
+
 为了保持跟官方的一致，我们在build/jsb-default/frameworks/cocos2d-x/tools/tojs 目录下创建genbindings_test.py，里面的内容基本跟genbindings.py 差不多，主要区别有如下几点：
 1.去掉了cmd_args 那段，里面主要是记录了cocos自带的一些需要生成jsb的文件，因为考虑到项目可能会对Cocos源码进行修改，如果这时候把这部分保留的话，当运行脚本后会把我们自带的修改就给覆盖掉了
 2.取消了定制的output_dir也就是最终生成的js，c++等绑定文件的路径，而是保持跟Cocos一样，也即在cocos/scripting/js-bindings/auto，主要为了方便下一步配置mk文件
@@ -273,14 +282,7 @@ abstract_classes = JSBBridge
 ```
 其实从里面的注释也讲的非常详细，这里说几个主要的属性及含义：
 
-| 属性  | 含义  |
-| :------------: | :------------ |
-|  prefix | 定义生成的绑定文件里面的函数名称，函数名称的组合是js + prefix + 头文件里面的函数名称，例如我们前面在头文件里面定义了JSBBridge_abcLog，然后prefix设置成cocos2dx_test，那最终绑定文件里面的函数名就是js_cocos2dx_test_JSBBridge_abcLog  |
-| target_namespace  |  脚本中的目标命名空间，例如 cc, spine 等 |
-|  headers | 需要被绑定的头文件列表，以空格分隔，头文件将被递归扫描  |
-|  cpp_headers  |  绑定代码需要包含但是不需要被绑定工具扫描的头文件列表 |
-| classes   |  需要被绑定的类名列表，以空格分隔 |
-| abstract_classes   |  配置成抽象类后，则不会绑定其构造方法，以空格分隔 |
+![](/images/cocos-creator-js-binding-auto/114.png)
 
 以上的配置完成后，就可以按照如下命令运行自动生成绑定文件：
 ![](/images/cocos-creator-js-binding-auto/88.png)
@@ -371,7 +373,8 @@ bool register_all_cocos2dx_test(se::Object* obj)
 ```
 看到这里是不是感觉很熟悉，跟Cocos 已有的那些cpp完全一样，甚至包括里面的注册函数和类的定义都给全部自动生成了。
 
-# Cocos编译配置
+## Cocos编译配置
+
 尽管经过上面一步后我们已经生成出来了绑定文件，但是js层还是没法直接使用，因为还需要把生成的绑定文件，配置到mk文件中，从而跟其他c++文件一起编译才行，这部分主要就是将最后的mk编译配置。
 1.打开build/jsb-default/frameworks/cocos2d-x/cocos/Android.mk文件，在其中加上最开始实现的cpp文件
 ![](/images/cocos-creator-js-binding-auto/100.png)
@@ -385,7 +388,9 @@ bool register_all_cocos2dx_test(se::Object* obj)
 
 经过上面这些配置后，最终就可以在js层直接像下面这样来进行调用，而不是用callStaticMethod方式
 ![](/images/cocos-creator-js-binding-auto/113.png)
-# 自动绑定的限制条件
+
+## 自动绑定的限制条件
+
 自动绑定依赖于Bindings Generator 工具，Cocos官方还在github上单独把这部分拎出来了，https://github.com/cocos2d/bindings-generator/ 
 Bindings Generator 工具它可以将 C++ 类的公共方法和公共属性绑定到脚本层。自动绑定工具尽管非常强大，但是还是会有一些限制：
 1. 只能够针对类生成绑定，不可以绑定结构体，独立函数等。
@@ -394,5 +399,6 @@ Bindings Generator 工具它可以将 C++ 类的公共方法和公共属性绑�
 4. 部分 API 实现内容并没有完全体现在其 API 定义中。
 5. 在运行时由 C++ 主动调用的 API。
 
-# 总结
+## 总结
+
 总的来说，自动绑定JSB只需要要求开发者编写相关的实现c++实现类，一个配置文件，然后执行一条命令就能完整整个的绑定过程，如果没有什么特殊定制，相对于手动绑定来说，效率上还是提高了不少，实际工作做可以依据具体情况先用自动绑定功能，然后再去手动修改生成的绑定文件，达到事倍功半的效果。
