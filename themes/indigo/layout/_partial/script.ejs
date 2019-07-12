@@ -8,14 +8,16 @@ lazyScripts.push('//s95.cnzz.com/z_stat.php?id=<%-theme.cnzz %>&web_id=<%-theme.
 </script>
 
 <script src="<%- url_for(theme_js('/js/main', cache)) %>"></script>
-<% if (theme.search){ %>
+<% if (theme.search && cache){ %>
 <%- partial('search') %>
 <script src="<%- url_for(theme_js('/js/search', cache)) %>" async></script>
 <% } %>
 
+<% if (cache) { %>
 <%- partial('plugins/mathjax') %>
+<% } %>
 
-<% if (theme.visit_counter) { %>
+<% if (theme.visit_counter && cache) { %>
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <% } %>
 

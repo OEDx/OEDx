@@ -22,13 +22,13 @@ author: "[张韩(khanzhang)](http://khanzhang.cn)"
 
 ## 前言
 
-Cocos Creator 的引擎部分包括 ```JavaScript```、```Cocos2d-x-lite``` 和 ```adapter``` 三个部分，各部分对应源码在（Mac 版）：
+Cocos Creator 的引擎部分包括 `JavaScript`、`Cocos2d-x-lite` 和 `adapter` 三个部分，各部分对应源码在（Mac 版）：
 
 1. JavaScript：CocosCreator.app/Resource/engine（JS 引擎）
 2. Cocos2d-x-lite：CocosCreator.app/Resource/cocos2d-x（Cococ2d-x 引擎）
 3. adapter：CocosCreator.app/Resource/builtin/
 
-其中 ```engine``` 文件夹下代码部分包含了引擎的 JS 层逻辑，而引擎的资源加载与释放部分代码就处于此文件夹中，路径为 ```cocos2d/core/load-pipeline/```，主要涉及 ```pipeline.js```、```loading-items.js```、```CCLoader.js```、```loader.js```、```uuid-loader.js``` 等文件。
+其中 `engine` 文件夹下代码部分包含了引擎的 JS 层逻辑，而引擎的资源加载与释放部分代码就处于此文件夹中，路径为 `cocos2d/core/load-pipeline/`，主要涉及 `pipeline.js`、`loading-items.js`、`CCLoader.js`、`loader.js`、`uuid-loader.js` 等文件。
 
 另外，需要了解的是 CocosCreator 引擎中资源是有依赖关系的，比如 SpriteAtlas 资源的加载会依赖于多个 SpriteFrame 资源的加载，而 SpriteFrame 资源依赖于 Texture2D 资源。
 
@@ -36,7 +36,7 @@ Cocos Creator 的引擎部分包括 ```JavaScript```、```Cocos2d-x-lite``` 和 
 
 ## 调试、修改引擎代码
 
-1. 找到 ```CocosCreator``` 的 ```JavaScript``` 引擎所在目录 ```CocosCreator.app/Resource/engine```，将该文件夹复制到其他地方，我们将对复制后的代码进行调试和修改。然后在 CocosCreator 的项目设置中修改 ```JavaScript``` 引擎路径为复制后的路径。如果要调试 ```Cocos2d-x``` 部分，修改对应文件夹即可。如下图：
+1. 找到 `CocosCreator` 的 `JavaScript` 引擎所在目录 `CocosCreator.app/Resource/engine`，将该文件夹复制到其他地方，我们将对复制后的代码进行调试和修改。然后在 CocosCreator 的项目设置中修改 `JavaScript` 引擎路径为复制后的路径。如果要调试 `Cocos2d-x` 部分，修改对应文件夹即可。如下图：
 ![定义 JavaScript 引擎路径](https://blog-pic-1251295613.cos.ap-guangzhou.myqcloud.com/1552547553.94SmartPic.png)
 
 2. 运行以下命令安装编译依赖
@@ -50,13 +50,13 @@ Cocos Creator 的引擎部分包括 ```JavaScript```、```Cocos2d-x-lite``` 和 
     npm install
     ```
 
-3. 现在可以打开 ```engine``` 文件夹，对 JS 引擎部分进行修改。修改后，在该文件夹下运行 ```gulp build``` 命令即可编译修改的部分，然后刷新 CocosCreator 预览的网页即可
+3. 现在可以打开 `engine` 文件夹，对 JS 引擎部分进行修改。修改后，在该文件夹下运行 `gulp build` 命令即可编译修改的部分，然后刷新 CocosCreator 预览的网页即可
 
-4. 至于调试其源码，可以直接在 ```Chrome``` 开发者工具中 ```Cmd + o``` （Mac 快捷键）呼出搜索框，输入并打开你需要调试的文件，然后即可打断点进行调试
+4. 至于调试其源码，可以直接在 `Chrome` 开发者工具中 `Cmd + o` （Mac 快捷键）呼出搜索框，输入并打开你需要调试的文件，然后即可打断点进行调试
 
 ## CocosCreator 引擎资源加载与释放简析
 
-引擎资源加载与释放源码路径为 ```engine/cocos2d/core/load-pipeline/```，主要关注 ```pipeline.js```、```loading-items.js```、```CCLoader.js```、```loader.js```、```uuid-loader.js``` 这几个文件。
+引擎资源加载与释放源码路径为 `engine/cocos2d/core/load-pipeline/`，主要关注 `pipeline.js`、`loading-items.js`、`CCLoader.js`、`loader.js`、`uuid-loader.js` 这几个文件。
 
 其中资源加载涉及 CCLoader、pipeline、loading-items、loader、uuid-loader 等多个类，而资源释放则主要是 CCLoader 中的 release 方法。
 
@@ -242,7 +242,7 @@ flow 方法中对资源的处理分为三部分：
 
 - 如果资源状态为 ERROR，则直接返回
 - 如果资源状态为 COMPLETE 已完成，如果后续还有 pipe 就将其交给下一个 pipe 处理
-- 如果资源状态为空，说明此资源从未进行加载，则调用 pipe.handle 方法对其进行加载。加载完成后，先将加载结果交给 item，即```item.content = result```，然后会对其加载状态 states 进行修改，最后如果后续还有 pipe 就将其交给后续 pipe 处理。
+- 如果资源状态为空，说明此资源从未进行加载，则调用 pipe.handle 方法对其进行加载。加载完成后，先将加载结果交给 item，即`item.content = result`，然后会对其加载状态 states 进行修改，最后如果后续还有 pipe 就将其交给后续 pipe 处理。
 
 接下来再来看一下 pipe.handle 方法。从以下代码可以看出， CCLoader 初始化时，提供了三个 pipe：asset-loader、downloader、loader。实际上 pipe.handle 调用的其实是 assetLoader、downloader、loader 的 handle 方法，下边以 loader 为例进行介绍。
 
@@ -338,7 +338,7 @@ proto.release = function (asset) {
 > 注：
 >
 > 1. 这里的 released-asset-checker 是一个辅助类，其中一个作用就是检测已释放资源是否仍被其他资源引用
-> 2. release 方法其实仍存在缺陷，缺陷之一是无法释放 SpriteAtlas 所依赖的 SpriteFrame 资源，在释放后 SpriteFrame 资源仍存在与 pipeline._cache 中。这导致释放后再次加载同一个 SpriteAtlas 资源的加载不完整问题，该问题的表现是第二次加载 SpriteAtlas 后播放帧动画黑块现象。原因是：加载到 SpriteAtlas 依赖的 SpriteFrame 资源部分时，根据 pipeline.flow 方法代码会发现由于此时 ```SpriteFrame.states = { "AssetLoader": 2, "Downloader": 2, "loader": 2}```，这里 2 代表加载状态 COMPLETE，就是说该资源在所有 pipe 的状态均是已加载完成，资源直接通过了三个管道，最后执行 flowOut 方法，没有继续加载 SpriteFrame 所依赖的 Texture2D 资源，导致显示黑块。
+> 2. release 方法其实仍存在缺陷，缺陷之一是无法释放 SpriteAtlas 所依赖的 SpriteFrame 资源，在释放后 SpriteFrame 资源仍存在与 pipeline._cache 中。这导致释放后再次加载同一个 SpriteAtlas 资源的加载不完整问题，该问题的表现是第二次加载 SpriteAtlas 后播放帧动画黑块现象。原因是：加载到 SpriteAtlas 依赖的 SpriteFrame 资源部分时，根据 pipeline.flow 方法代码会发现由于此时 `SpriteFrame.states = { "AssetLoader": 2, "Downloader": 2, "loader": 2}`，这里 2 代表加载状态 COMPLETE，就是说该资源在所有 pipe 的状态均是已加载完成，资源直接通过了三个管道，最后执行 flowOut 方法，没有继续加载 SpriteFrame 所依赖的 Texture2D 资源，导致显示黑块。
 
 ## 参考文章
 

@@ -216,11 +216,14 @@ namespace abc
 * 按照模版生成类绑定函数，API 绑定函数，绑定注册函数并输出到文件中。
 
 关于custom_cmd_args参数的配置这里说明下：
+
 ```xml
 'cocos2dx_test.ini': ('cocos2dx_test', 'jsb_cocos2dx_test_auto'),
 配置文件：（模块名称，输出的绑定文件名）
 ```
+
 这里的配置文件cocos2dx_test.ini又是用来干嘛的呢？其实就跟build/jsb-default/frameworks/cocos2d-x/tools/tojs/下的其他.ini文件类似，主要让自动绑定工具知道哪些 API 要被绑定和以什么样的方式绑定，写法上直接参考Cocos已有的ini文件，这里展示下cocos2dx_test.ini的内容：
+
 ```shell
 [cocos2dx_test]
 # the prefix to be added to the generated functions. You might or might not use this in your own
@@ -280,6 +283,7 @@ base_classes_to_skip = Clonable
 # Set is special and we will use a hand-written constructor
 abstract_classes = JSBBridge
 ```
+
 其实从里面的注释也讲的非常详细，这里说几个主要的属性及含义：
 
 ![](/images/cocos-creator-js-binding-auto/114.png)
@@ -368,9 +372,8 @@ bool register_all_cocos2dx_test(se::Object* obj)
     js_register_cocos2dx_test_JSBBridge(ns);
     return true;
 }
-
-
 ```
+
 看到这里是不是感觉很熟悉，跟Cocos 已有的那些cpp完全一样，甚至包括里面的注册函数和类的定义都给全部自动生成了。
 
 ## Cocos编译配置

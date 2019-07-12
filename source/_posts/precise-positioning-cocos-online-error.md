@@ -24,7 +24,7 @@ author: "[张韩(khanzhang)](http://khanzhang.cn)"
     {PATH}/cocos-jsc-endecryptor/edc.py decrypt -k {COCOS_PROJECT_ENCRYT_KEY} -p {COCOS_PROJECT_PATH}/build/jsb-default/src/project.jsc
     ```
 
-    你也可以在 VSCode 中配置一项任务，之后直接在 VSCode 中运行该任务即可编译出 project.jsc 来定位问题：
+    你也可以在 VSCode 中配置一项任务，之后直接在 VSCode 中运行该任务即可编译出 project.jsc 来定位问题：
 
     ```json
     {
