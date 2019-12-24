@@ -110,6 +110,8 @@
                 headerH = header.clientHeight,
                 titles = $('#post-content').querySelectorAll('h1, h2, h3, h4, h5, h6');
 
+            if (!toc.querySelector('a[href="#' + titles[0].id + '"]')) return;
+
             toc.querySelector('a[href="#' + titles[0].id + '"]').parentNode.classList.add('active');
 
             // Make every child shrink initially
@@ -454,8 +456,10 @@
     w.addEventListener('DOMContentLoaded', function () {
         Blog.waterfall();
         var top = rootScollTop();
-        Blog.toc.fixed(top);
-        Blog.toc.actived(top);
+        if (Blog.toc) {
+            Blog.toc.fixed(top);
+            Blog.toc.actived(top);
+        }
         Blog.page.loaded();
     });
 
@@ -511,8 +515,10 @@
         var top = rootScollTop();
         Blog.toggleGotop(top);
         Blog.fixedHeader(top);
-        Blog.toc.fixed(top);
-        Blog.toc.actived(top);
+        if (Blog.toc) {
+            Blog.toc.fixed(top);
+            Blog.toc.actived(top);
+        }
     }, false);
 
     if (w.BLOG.SHARE) {
