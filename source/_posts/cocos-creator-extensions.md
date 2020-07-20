@@ -1,5 +1,5 @@
 ---
-title: Cocos Creator 常用扩展分享
+title: 那些年，我们为 Cocos Creator 开发的插件和工具
 date: 2020-06-30 16:31:28
 tags: [Cocos, Cocos Creator, 插件]
 categories: 客户端
@@ -96,142 +96,49 @@ cc.Class({
 
 ## 控制台扩展：控制台查看节点树，节点属性
 
-通过 Chrome 的开发者工具我们可以直接对原生平台中 Cocos Creator 的 JavaScript 代码进行远程调试，但一些 UI 相关问题依然不好定位，如果能在控制台里查看节点树就会方便很多。这里就给大家分享一个控制台查看节点树节点属性的脚本。
+通过 Chrome 的开发者工具我们可以直接对原生平台中 Cocos Creator 的 JavaScript 代码进行远程调试，但一些 UI 相关问题依然不好定位，如果能在控制台里查看节点树就会方便很多。
+
+首先介绍一下 console.group 和 console.groupEnd 这两个函数，它们可以组成一个可以折叠的标签，用于将输出信息分组，console.group 默认展开，相应的还有一个 console.groupCollapsed  默认折叠，显然我们可以用它们输出树形结构。
 
 ```
-(function () {
-  if (cc.tree) return;
-  cc.tree = function (key) {
-    let index = key || 0;
-    let treeNode = function (node) {
-      let nameStyle =
-        `color: ${node.parent === null ||
-          node.activeInHierarchy ? 'green' : 'grey'}; 
-        font-size: 14px;font-weight:bold`;
-      let propStyle =
-        `color: black; background: lightgrey;margin-left: 5px;
-        border-radius:3px;padding: 0 3px;font-size: 10px;
-        font-weight:bold`;
-      let indexStyle =
-        `color: orange; background: black;margin-left: 5px;border-radius:3px;
-        padding:0 3px;fonrt-size: 10px;font-weight:bold;`
-      let nameValue = `%c${node.name}`;
-      let propValue =
-        `%c${node.x.toFixed(0) + ',' + node.y.toFixed(0) + ',' +
-        node.width.toFixed(0) + ',' + node.height.toFixed(0) + ',' +
-        node.scale.toFixed(1)}`;
-      let indexValue = `%c${index++}`;
-      if (node.childrenCount > 0) {
-        console.groupCollapsed(nameValue + propValue + indexValue, nameStyle,
-          propStyle, indexStyle);
-        for (let i = 0; i < node.childrenCount; i++) {
-          treeNode(node.children[i]);
-        }
+function tree(node = cc.director.getScene()) {
+    let style = `color: ${node.parent === null || node.activeInHierarchy ? 'green' : 'grey'};`;
+    if (node.childrenCount > 0) {
+        console.groupCollapsed(`%c${node.name}`, style);
+        node.children.forEach(child => tree(child));
         console.groupEnd();
-      } else {
-        console.log(nameValue + propValue + indexValue, nameStyle, propStyle,
-          indexStyle);
-      }
-    }
-    if (key) {
-      let node = cc.cat(key);
-      index = node['tempIndex'];
-      treeNode(node);
     } else {
-      let scene = cc.director.getScene();
-      treeNode(scene);
+        console.log(`%c${node.name}`, style);
     }
-    return '属性依次为x,y,width,height,scale.使用cc.cat(id)查看详细属性.';
-  }
-  cc.cat = function (key) {
-    let index = 0;
-    let target;
-    let sortId = function (node) {
-      if (target) return;
-      if (cc.js.isNumber(key)) {
-        if (key === index++) {
-          target = node;
-          return;
-        }
-      } else {
-        if (key.toLowerCase() === node.name.toLowerCase()) {
-          target = node;
-          return;
-        } else {
-          index++;
-        }
-      }
-      if (node.childrenCount > 0) {
-        for (let i = 0; i < node.childrenCount; i++) {
-          sortId(node.children[i]);
-        }
-      }
-    }
-    let scene = cc.director.getScene();
-    sortId(scene);
-    target['tempIndex'] = cc.js.isNumber(key) ? key : index;
-    return target;
-  }
-  cc.list = function (key) {
-    let targets = [];
-    let step = function (node) {
-      if (node.name.toLowerCase().indexOf(key.toLowerCase()) > -1) {
-        targets.push(node);
-      }
-      if (node.childrenCount > 0) {
-        for (let i = 0; i < node.childrenCount; i++) {
-          step(node.children[i]);
-        }
-      }
-    }
-    let scene = cc.director.getScene();
-    step(scene);
-    if (targets.length === 1) {
-      return targets[0];
-    } else {
-      return targets;
-    }
-  }
-  cc.where = function (key) {
-    let target = key.name ? key : cc.cat(key);
-    if (!target) {
-      return null;
-    }
-    let rect = target.getBoundingBoxToWorld();
-    let bgNode = new cc.Node();
-    let graphics = bgNode.addComponent(cc.Graphics);
-    let scene = cc.director.getScene();
-    scene.addChild(bgNode);
-    bgNode.position = rect.center;
-    bgNode.group = target.group;
-    bgNode.zIndex = cc.macro.MAX_ZINDEX;
-    let isZeroSize = rect.width === 0 || rect.height === 0;
-    if (isZeroSize) {
-      graphics.circle(0, 0, 100);
-      graphics.fillColor = cc.Color.GREEN;
-      graphics.fill();
-    } else {
-      bgNode.width = rect.width;
-      bgNode.height = rect.height;
-      graphics.rect(-bgNode.width / 2, -bgNode.height / 2,
-        bgNode.width, bgNode.height);
-      graphics.fillColor = new cc.Color().fromHEX('#E91E6390');
-      graphics.fill();
-    }
-    setTimeout(() => {
-      if (cc.isValid(bgNode)) {
-        bgNode.destroy();
-      }
-    }, 2000);
-    return target;
-  }
-})();
+}
 ```
-将上述代码粘贴到控制台，然后输入 `cc.tree()`, 神奇的事情就发生了
+将上述代码粘贴到控制台，然后输入 `tree()`, 就可以查看当前场景的节点树结构了。
 
-![控制台查看节点树](/images/cocos-creator-extensions/cc-console-utils.png)
+![控制台查看节点树简版](/images/cocos-creator-extensions/cc-console-utils-preview1.jpeg)
+
+上面的功能还很简陋，经过扩展我们可以获得更多的功能
+
+![控制台查看节点完整版](/images/cocos-creator-extensions/cc-console-utils-preview2.png)
 
 每个节点后边会附带常见的几个属性和唯一id，通过 `cc.cat(id)` 即可获得这个节点的引用，提高调试效率。
+
+源码：
+
+[https://github.com/potato47/ccc-devtools/blob/master/libs/js/cc-console-utils.js](https://github.com/potato47/ccc-devtools/blob/master/libs/js/cc-console-utils.js)
+
+## 适用于 Cocos 的 JSC 加解密工具
+
+Cocos Creator 在构建的时候支持对脚本进行加密和压缩。
+
+![Cocos Creator 脚本加密](/images/cocos-creator-extensions/jsc-encryption-preview1.png)
+
+然而，官方并没有提供一个解压和解密的工具。这给 jsc 的二次修改和重用带来了不便。
+
+本工具弥补了这个不足：提供了与 Cocos Creator 相同的加密、解密、压缩、解压的方法。可以很方便地对构建得到的 jsc 进行解密、解压得到 js ，也可以将 js 压缩、加密回 jsc 。
+
+源码：
+
+[https://github.com/OEDx/cocos-jsc-endecryptor](https://github.com/OEDx/cocos-jsc-endecryptor)
 
 ## 参考
 
