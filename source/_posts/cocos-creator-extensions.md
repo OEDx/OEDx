@@ -1,5 +1,5 @@
 ---
-title: 那些年，我们为 Cocos Creator 开发的插件和工具
+title: 人生苦短，我们为 Cocos Creator 开发的插件和工具
 date: 2020-06-30 16:31:28
 tags: [Cocos, Cocos Creator, 插件]
 categories: 客户端
