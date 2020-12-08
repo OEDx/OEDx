@@ -8,6 +8,7 @@ cache:
     - node_modules
 
 before_install:
+  - npm install -u npm@12.14
   - npm install -g hexo-cli
 
 # Start: Build Lifecycle
