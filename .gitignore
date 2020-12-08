@@ -4,4 +4,5 @@ db.json
 *.log
 node_modules/
 public/
-.deploy*/
+.deploy*/source/_posts/.emacs.desktop
+.emacs.desktop
