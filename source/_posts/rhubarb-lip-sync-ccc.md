@@ -6,11 +6,13 @@ categories: 客户端
 author: "[潘伟洲(josephpan)](http://hahack.com)"
 ---
 
-![lipsync-zhs|690x349](upload://1uRHAgmIawNkfXtw6x2uyuly6TR.jpeg) 
+![lipsync](https://forum.cocos.org/uploads/default/optimized/3X/0/a/0a7f636acdc06f1c07b6bd2f55ce83dee06a3b9f_2_1380x698.jpeg) 
 
 rhubarb-lip-sync-ccc (简称 lipsync) 是一款专用于 Cocos Creator 的嘴型动画生成插件，它可以根据一段语音生成嘴型动画的 Animation Clip 。适合用于制作游戏角色的说话动画。支持中英文语言。
 
 rhubarb-lip-sync-ccc 基于 DanielSWolf /rhubarb-lip-sync，在他的基础上添加了对自动生成 Cocos Creator 的 Animation Clip 的支持。
+
+<!-- more -->
 
 ## 项目信息
 
