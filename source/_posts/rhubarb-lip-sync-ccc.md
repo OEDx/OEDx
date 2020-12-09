@@ -23,7 +23,7 @@ rhubarb-lip-sync-ccc 基于 DanielSWolf /rhubarb-lip-sync，在他的基础上�
 
 * demo 视频：
 
-<iframe src="//player.bilibili.com/player.html?aid=458012711&bvid=BV1V5411G7cm&cid=263901047&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+<iframe src="//player.bilibili.com/player.html?aid=458012711&bvid=BV1V5411G7cm&cid=263901047&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="460px"> </iframe>
 
 * 相关的示例仓库代码在：<https://github.com/wzpan/lipsync-demo>
 
