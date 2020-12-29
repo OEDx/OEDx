@@ -8,7 +8,7 @@ author: "黄成华(galiohuang)"
 
 > 只为解决一个核心问题，追求更好体验。
 
-## 1. 背景
+## 背景
 
 腾讯开心鼠项目使用的游戏引擎是 Cocos Creator，由于引擎提供的视频组件实现方式问题导致视频组件和游戏界面分了层，从而导致了以下若干问题:
 
@@ -19,22 +19,22 @@ author: "黄成华(galiohuang)"
 
 核心问题就是分层问题，对于开心鼠项目带来的最大弊端就是：一套设计，Android，iOS，Web 三端需要各自实现，开发和维护成本高，又因为平台差异化，还存在视觉不一致和表现不一致问题。
 
-## 2. 解决方案
+## 解决方案
 
-![](http://qiniu.lijianfei.com/uPic/1609213303_85_w2856_h1188.png)
+![](/images/FFmpeg-Cocos-Creator/1609213303_85_w2856_h1188.png)
 
 因为开心鼠项目需要兼容 Android，iOS 和 Web 三端，Android 和 iOS 一起视为移动端，所以解决方案有以下两点：
 
 1. 移动端可使用 FFmpeg 库解码视频流，然后使用 OpenGL 来渲染视频，和使用 Andorid, iOS 两端各自的音频接口来播放音频；
 2. 网页端可以直接使用 `video` 元素来解码音视频，然后使用 WebGL 来渲染视频，和使用 `video` 元素来播放音频。
 
-## 3. 任务细分
+## 任务细分
 
-![](http://qiniu.lijianfei.com/uPic/ntB1Ew.png)
+![](/images/FFmpeg-Cocos-Creator/ntB1Ew.png)
 
-## 4. 任务详情
+## 任务详情
 
-### 4.1 移动端 ffplay 播放音视频
+### 移动端 ffplay 播放音视频
 
 FFmpeg 官方源码，可以编译出三个可执行程序，分别是 ffmpeg, ffplay, ffprobe ，三者作用分别是：
 
@@ -44,7 +44,7 @@ FFmpeg 官方源码，可以编译出三个可执行程序，分别是 ffmpeg, f
 
 其中 ffplay 程序满足了播放音视频的需求，理论上，只要把 SDL 视频展示和音频播放接口替换成移动端接口，就能完成 Cocos Creator 的音视频播放功能，但在实际 ffplay 改造过程中，还是会遇到很多小问题，例如：在移动端使用 swscale 进行纹理缩放和像素格式转换效率低下，不支持 Android asset 文件读取问题等等，下文会逐一解决。经过一系列改造后，Cocos Creator 可用的 AVPlayer 诞生了。以下为 AVPlayer 播放音视频流程分析：
 
-![](http://qiniu.lijianfei.com/uPic/1606737160_43_w4030_h2180.png)
+![](/images/FFmpeg-Cocos-Creator/1606737160_43_w4030_h2180.png)
 
 概括：
 
@@ -56,11 +56,11 @@ FFmpeg 官方源码，可以编译出三个可执行程序，分别是 ffmpeg, f
 
 ffplay 改造后的 AVPlayer UML如下：
 
-![](http://qiniu.lijianfei.com/uPic/Wn9Lbz.png)
+![](/images/FFmpeg-Cocos-Creator/Wn9Lbz.png)
 
 声明：因为本人少接触 c 和 c++ ，所以在 ffplay 改造过程中，SDL 线程改造和字幕分析参考了 bilibili 的 ijkplayer 源码。
 
-### 4.2 JSB 绑定视频组件接口
+### JSB 绑定视频组件接口
 
 此节不适合 Web 端，关于 JSB 相关知识，可查阅文档：[JSB 2.0 绑定教程](https://docs.cocos.com/creator/manual/zh/advanced-topics/JSB2.0-learning.html)
 
@@ -68,7 +68,7 @@ ffplay 改造后的 AVPlayer UML如下：
 
 因为播放器逻辑使用 C 和 C++ 编码，所以需要绑定 JS 和 C++ 对象。上文中的 AVPlayer 只负责解码和播放流程，播放器还需要处理入参处理，视频渲染和音频播放等工作，因此封装了一个类：Video，其 UML 如下：
 
-![](http://qiniu.lijianfei.com/uPic/aHbvFN.png)
+![](/images/FFmpeg-Cocos-Creator/aHbvFN.png)
 
 Video.cpp 绑定的 JS 对象声明如下：
 
@@ -145,7 +145,7 @@ video.addEventListener('completed', () => {});              // 监听播放完�
 video.addEventListener('error', () => {});                  // 监听播放失败事件
 ```
 
-### 4.3 视频展示，纹理渲染
+### 视频展示，纹理渲染
 
 实现视频展示功能，需要先了解纹理渲染流程，由于 Cocos Creator 在移动端使用的是 OpenGL API，在 Web 端使用的 WebGL API，OpenGL API 和 WebGL API 大致相同，因此可以到 OpenGL 网站学习下纹理渲染流程。初学者，推荐到 [LearnOpenGL CN](https://learnopengl-cn.github.io/) 学习。接下来使用 [LearnOpenGL CN](https://learnopengl-cn.github.io/) 纹理章节讲解以下纹理渲染流程。
 
@@ -330,7 +330,7 @@ int main()
 
 第2点描述的位置坐标系和纹理系不同，具体不同如下图：
 
-![](http://qiniu.lijianfei.com/uPic/xKR8ij.png)
+![](/images/FFmpeg-Cocos-Creator/xKR8ij.png)
 
 - 位置坐标系原点（0，0）在中心位置，x，y 取值范围是 -1 到 1；
 - 纹理坐标系原点（0，0）在左上角位置，x，y取值范围是 0 到 1；
@@ -552,7 +552,7 @@ this.update = dt => {
 
 至此，视频展示小节完毕。
 
-### 4.4 音频播放
+### 音频播放
 
 在改造音频播放过程之前，查阅了 **ijkplayer** 的音频播放方案，作为现状分析。
 
@@ -595,9 +595,9 @@ public:
 #endif //I_AUDIO_DEVICE_H
 ```
 
-### 4.5 优化与扩展
+### 优化与扩展
 
-#### 4.5.1 边下边播
+#### 边下边播
 
 边下边播可以说是音视频播放器必备的功能，不但可以节省用户流量，而且可以提高二次打开速度。最常见的边下边播实现方式是在客户端建立代理服务器，只需要对播放器传入的资源路径加以修改，从而达到播放功能和下载功能解耦。不过理论上，建立代理服务器会增加移动设备的内存和电量消耗。
 
@@ -625,7 +625,7 @@ const URLProtocol av_cache_protocol = {
 
 原理就是：在 av_cache_read 方法中，调用其他协议的 read 方法，得到数据后，写入文件并存储下载信息，并把数据返回给播放器。
 
-#### 4.5.2 libyuv 替换 swscale
+#### libyuv 替换 swscale
 
 YUV（[wikipedia](https://zh.wikipedia.org/wiki/YUV)），是一种颜色编码方法。为了节省带宽，大多数 YUV 格式平均使用的每像素位数都少于24位，因此一般视频都是用 YUV 颜色编码。YUV 由分为两种格式，分别是紧缩格式和平面格式。其中平面格式将 Y、U、V 的三个分量分别存放在不同的矩阵中。
 
@@ -645,7 +645,7 @@ YUV（[wikipedia](https://zh.wikipedia.org/wiki/YUV)），是一种颜色编码�
 
 使用 libyuv 进行像素格式转换后，使用小米 Mix 3 设备，1280x720 分辨率的视频，像素格式从 AV_PIX_FMT_YUV420P 转成 AV_PIX_FMT_RGB24，缩放按照二次线性采样，平均耗时 8 毫秒，相对 swscale 降低了一半。数据截图待补：
 
-#### 4.5.3 Android asset 协议
+#### Android asset 协议
 
 由于 Cocos Creator 本地音视频资源在 Android 端会打包到 asset 目录下，在 asset 目录下的资源需要使用 AssetManager 打开，因此需要支持 Android asset 协议，具体协议声明如下：
 
@@ -661,7 +661,7 @@ const URLProtocol asset_protocol = {
 };
 ```
 
-## 5. 成果展示
+## 成果展示
 
 
 {% raw %}
@@ -674,7 +674,7 @@ const URLProtocol asset_protocol = {
 {% endraw %}
 
 
-## 6. 参考文档
+## 参考文档
 
 1. FFmpeg: https://ffmpeg.org/
 2. Cocos Creator 自定义 Assembler: https://docs.cocos.com/creator/manual/zh/advanced-topics/custom-render.html#
