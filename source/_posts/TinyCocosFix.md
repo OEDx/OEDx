@@ -59,8 +59,6 @@ App 版本4.4.0已经发布了6个热更新版本，当我们创建7.0热更新�
 
 接口如下：
 ![](/images/TinyCocosFix/6.png)
-具体实现可参考：https://git.code.oa.com/bearhuang/TinyFix-uploader
-
 
 
 ### **2.客户端**
@@ -180,14 +178,3 @@ TinyCocosFix 会上报三类信息，具体如下
 ## 感谢
 感谢一起参与设计和实现热更新方案的小伙伴们。
 @josephpan(潘伟洲) @mariozheng(郑磊) @ezli(李剑飞) @aflextyang(杨波) @shinhachen(陈新华) @erikyi(衣文琦) @irisxxiao(肖湘) @xuyangfan(范旭阳)
-
-
-## 更多
-TinyCocosFix的接入文档:
-https://git.code.oa.com/bearhuang/TinyFix
-
-热更新设计文档:
-https://iwiki.woa.com/pages/viewpage.action?pageId=430994575
-
-Cocos热更新官方文档:
-https://docs.cocos.com/creator/manual/zh/advanced-topics/assets-manager.html
