@@ -1,5 +1,5 @@
 ---
-title: ABCBinding--简化Cocos和Native交互利器
+title: ABCBinding -- 简化Cocos和Native交互利器
 date: 2021-04-20 11:31:56
 tags: [Cocos, 热更新, 注解]
 categories: 客户端
