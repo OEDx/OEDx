@@ -324,7 +324,7 @@ void PlatformMessageRouter::HandlePlatformMessage(
 
 `ABCBinding` 的结构如下图所示：（可以看出，`ABCBinding`其实就是个中间层或中间件）
 
-![ABCBinding](http://qiniu.lijianfei.com/uPic/ABCBinding.png)
+![ABCBinding](/images/abcbinding_ios/ABCBinding.png)
 
 
 
@@ -359,7 +359,7 @@ void PlatformMessageRouter::HandlePlatformMessage(
 
 5. 在` iOS` 任意`.m`文件中编写实现，只需要实现`@ABCBinding(FUNCTION)和@end`即可，函数名称编译器会帮助实现；
 
-   ![ABCBinding_iOS_Code](http://qiniu.lijianfei.com/uPic/ABCBinding_iOS_Code.gif)
+   ![ABCBinding_iOS_Code](/images/abcbinding_ios/ABCBinding_iOS_Code.gif)
 
    ```objc
    @ABCBinding(getHardwareInfo)
@@ -385,7 +385,7 @@ void PlatformMessageRouter::HandlePlatformMessage(
 
 程序源代码被编译之后主要分为两个段：程序指令和程序数据。代码段属于程序指令，`data` 和 `.bss` 节属于数据段。
 
-![](http://qiniu.lijianfei.com/uPic/3.png)
+![](/images/abcbinding_ios/ABCBinding_section.png)
 
 `Mach-O` 的组成结构如上图所示，包含了 `Header`、`Load commands`、`Data`（包含 `Segment` 的具体数据），我们平时了解到的可执行文件、库文件、`Dsym` 文件、动态库、动态链接器都是这种格式的。
 
@@ -430,7 +430,7 @@ void PlatformMessageRouter::HandlePlatformMessage(
 
    将工程打包，然后用 `MachOView `打开 `Mach-O` 文件，可以看出数据写入到相关数据区了，如下
 
-   ![](http://qiniu.lijianfei.com/uPic/image-20210518195746740.png)
+   ![](/images/abcbinding_ios/ABCBinding_DATA.png)
 
 3. 运行时读出数据。
 
@@ -521,7 +521,7 @@ static void _ABCBinding##JSFunc##load(){ \
 }
 ```
 
-![](http://qiniu.lijianfei.com/uPic/ABCBinding_iOS_Code.gif)
+![ABCBinding_iOS_Code](/images/abcbinding_ios/ABCBinding_iOS_Code.gif)
 
 为了能实现类似注解的功能，`ABCBinding`使用了`@protocol xxx @end`的关键字。这样就实现了三个功能：
 
