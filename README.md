@@ -1,6 +1,6 @@
 # OEDx 博客
 
-<a href="https://travis-ci.com/wzpan/oedx"><img alt="Travis" src="https://img.shields.io/travis/wzpan/oedx.svg?style=flat-square"></a>
+<a href="https://travis-ci.com/oedx/oedx"><img alt="Travis" src="https://img.shields.io/travis/oedx/oedx.svg?style=flat-square"></a>
 
 ## 投稿方法
 
